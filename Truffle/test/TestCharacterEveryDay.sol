@@ -26,4 +26,9 @@ contract TestCharacterEveryDay {
 
         Assert.equal(uint(votesBefore + 1), uint(votesAfter), "Vote not registered");
     }
+
+    // Can't figure out how to test a contract failing from Solidity, but if you uncomment this it will break which means it works?
+    // function testOneVote() public {
+    //     Assert.isFalse((cED.voteForCharacter(42)), "Voted twice in one day");
+    // }
 }
