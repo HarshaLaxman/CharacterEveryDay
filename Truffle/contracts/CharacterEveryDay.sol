@@ -20,13 +20,19 @@ contract CharacterEveryDay {
         timeOfLastVote = now;
         voteForCharacter(_character);
     }
+
+    //Does NOT prevent overflow ex: 257 on input becomes 1
+    modifier onlyCharacter(uint8 _character) {
+        require(_character < 256);
+        _;
+    }
     
-    function voteForCharacter(uint8 _character) public {
+    function voteForCharacter(uint8 _character) public onlyCharacter(_character) {
         if ((now - timeOfLastVote) > 1 days) {
-            addCharacter(winningCharacter);
+            selectCharacter(winningCharacter);
         }
         
-        require(_character <= 256);
+        // require(_character <= 256);
         uint256 todaysAddressHash = uint(keccak256(abi.encodePacked(day, msg.sender)));
         require(addressVotedToday[todaysAddressHash] == false);
         
@@ -43,7 +49,7 @@ contract CharacterEveryDay {
         return characterVotes;
     }
     
-    function addCharacter (uint8 _winningCharacter) private {
+    function selectCharacter (uint8 _winningCharacter) private {
         day += uint64((now - timeOfLastVote) / 1 days);
         // day += 1;
         emit CharacterSelected(_winningCharacter, characterVotes, day);
