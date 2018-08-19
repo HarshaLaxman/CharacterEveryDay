@@ -6,7 +6,8 @@ const B_Character = 'B'.charCodeAt(0);
 const C_Character = 'C'.charCodeAt(0);
 const D_Character = 'D'.charCodeAt(0);
 const Z_Character = 'Z'.charCodeAt(0);
-const Not_Character = "String";
+const Not_Character = 300;
+const Not_Number = "String";
 
 
 contract('TestCharacterEveryDay', async (accounts) => {
@@ -38,11 +39,17 @@ contract('TestCharacterEveryDay', async (accounts) => {
 		let err = null
 		let instance = await cED.deployed();
 
-		//Overflow Params
-		// await instance.voteForCharacter(Not_Character, {from: accounts[2]});
-		// let One_Votes = await instance.characterVotes(2);
+		try {
+			await instance.voteForCharacter(Not_Number, {from: accounts[2]});
+		}catch (error) {	
+			err = error
+		};
+		assert.ok(err instanceof Error);
+	});	
 
-		// assert.equal(One_Votes.valueOf(), 0);
+	it("should not allow a non character number vote", async () => {
+		let err = null
+		let instance = await cED.deployed();
 
 		try {
 			await instance.voteForCharacter(Not_Character, {from: accounts[2]});
@@ -52,7 +59,7 @@ contract('TestCharacterEveryDay', async (accounts) => {
 		assert.ok(err instanceof Error);
 	});	
 
-	it("should allow a vote after a failed vote", async () => {
+	it("should allow a vote after failed voting", async () => {
 		let instance = await cED.deployed();
 
 		await instance.voteForCharacter(Z_Character, {from: accounts[2]});
@@ -85,6 +92,16 @@ contract('TestCharacterEveryDay', async (accounts) => {
 		assert.equal(characterVotes[B_Character].valueOf(), 1);
 	});
 
+	it("should record the winning character", async () => {
+		let instance = await cED.deployed();
+
+		let winningCharacter = await instance.winningCharacter();
+		let winningCharacterVotes = await instance.winningCharacterVotes();
+
+		assert.equal(winningCharacter.valueOf(), A_Character);
+		assert.equal(winningCharacterVotes.valueOf(), 2);
+	});
+
 	it("should reset vote permissions after a day", async () => {
 		let thirtyHours = 108000; //seconds
 
@@ -97,36 +114,19 @@ contract('TestCharacterEveryDay', async (accounts) => {
 		assert.equal(day.valueOf(), 1);		
 	});
 
-		// it("should not select a character without voting", async () => {
-		// 	let err = null;
-		// 	let Not_Character = 257;
-		// 	// let C_Character = 'C'.charCodeAt(0);
-		// 	// let thirtyHours = 108000; //seconds
+	it("should not select a character without voting", async () => {
+		let thirtyHours = 108000; //seconds
 
-		// 	// await timeTravel.advanceTimeAndBlock(thirtyHours);
-		// 	let instance = await cED.deployed();
+		await timeTravel.advanceTimeAndBlock(thirtyHours);
+		let instance = await cED.deployed();
+		
+		try {
+			await instance.voteForCharacter(Not_Character, {from: accounts[1]});
+		}catch (error) {
+		};
+		
+		let day = await instance.day();
 
-		// 	try {
-		// 		await instance.voteForCharacter(Not_Character, {from: accounts[1]});
-		// 	}catch (error) {
-		// 		err = error
-		// 	};
-		// 	assert.ok(err instanceof Error);
-
-		// 	// let C_Votes = await instance.characterVotes(C_Character);
-
-		// 	// assert.equal(C_Votes, 1);
-		// });
-
-	// let err = null
-	// 	let instance = await cED.deployed();
-	// 	let Not_Character = 257;
-
-	// 	try {
-	// 		await instance.voteForCharacter(Not_Character, {from: accounts[1]});
-	// 	}catch (error) {	
-	// 		err = error
-	// 	};
-	// 	assert.ok(err instanceof Error);
-
+		assert.equal(day.valueOf(), 1);
+	});
 })
