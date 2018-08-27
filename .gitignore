@@ -1,3 +1,4 @@
 Truffle/build/*
 node_modules/*
 Truffle/node_modules/*
+Truffle/package-lock.json
