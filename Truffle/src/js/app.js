@@ -3,6 +3,7 @@ App = {
   contracts: {},
   winningCharacter: "",
   day: null,
+  instanceCED: null,
 
 
   initWeb3: function() {
@@ -29,29 +30,69 @@ App = {
 
       // did it work?
       console.log(App.contracts.CED);
-      var cEDInstance;
       
-      App.getDataCED();
+      App.getDataCED(App.loadPage);
+
+      // App.loadWinningCharacter();
      })
   },
 
-  getDataCED: async function() {
+  getDataCED: async function(callback) {
     let instance = await App.contracts.CED.deployed();
+    instanceCED = instance;
     console.log("instance: " , instance);
 
-    App.winningCharacter = await instance.winningCharacter().valueOf();
+    App.winningCharacter = await instance.winningCharacter();
     console.log("winningCharacter: " + App.winningCharacter);
 
-    App.day = await instance.day().valueOf();
+    App.day = await instance.day();
     console.log("day: " + App.day);
 
-    App.winningCharacterVotes = await instance.winningCharacterVotes().valueOf();
+    App.winningCharacterVotes = await instance.winningCharacterVotes();
     console.log("winningCharacterVotes: " + App.winningCharacterVotes);
 
     App.characterVotes = await instance.getCharacterVotes.call();
-    console.log("characterVotes: " + App. characterVotes);
+    console.log("characterVotes: ", App.characterVotes);
+
+    callback();
+  },
+
+  loadPage: function() {
+    // App.winningCharacter = await instanceCED.winningCharacter().valueOf();
+    // console.log("winningCharacter: " + App.winningCharacter);
+    console.log(App.winningCharacter);
+    $("#day").append(App.day.valueOf());
+    $("#winningCharacter").append(String.fromCharCode(App.winningCharacter.valueOf()));
+    $("#winningCharacterVotes").append(App.winningCharacterVotes.valueOf());
+
+    let characterVotesDict = [];
+    for (let charCode = 0; charCode < App.characterVotes.length; charCode++) {
+       let charVotes = {};
+       let char = String.fromCharCode(charCode);
+       charVotes[char] = App.characterVotes[charCode].valueOf();
+       characterVotesDict.push(charVotes);
+    }
+    characterVotesDict.sort(function(a,b) {
+      return parseInt(Object.values(b) - parseInt(Object.values(a)))
+    })
+    console.log(characterVotesDict);
+    // document.getElementById('foo').appendChild(makeUL(options[0]));
+    $("#characterVotes").append(App.makeList(characterVotesDict));
+  },
+
+  makeList: function(arrayObjs) {
+    var list = document.createElement('ul');
+
+    for(var i = 0; i < arrayObjs.length; i++) {
+        var item = document.createElement('li');
+        item.appendChild(document.createTextNode(Object.keys(arrayObjs[i])[0] + " : " + Object.values(arrayObjs[i])[0]));
+        list.appendChild(item);
+    }
+    
+    return list;
   }
 }
+
 
 $(function() {
     App.initWeb3();
