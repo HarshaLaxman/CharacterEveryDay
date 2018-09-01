@@ -1,0 +1,46 @@
+body {
+    background-color: #3C3C3D;
+}
+
+div {
+    color: #ECF0F1;
+}
+
+hr {
+    height:100vh; /* you might need some positioning for this to work, see other questions about 100% height */
+    /* width:0vh; */
+    width: 0vh;
+    float: left;
+    color: #FFFFFF;
+    /* border:1px solid #FFFFFF; */
+    margin-right: 1em;
+    /* position: absolute; */
+}
+
+input {
+    width: 1.5ch;
+}
+
+input[type="text"], textarea {
+    background-color : #C99D66; 
+}
+  
+
+.read {
+    float: left;
+    width: 20%;
+}
+
+.read .contractData {
+    color: #C99D66;
+}
+
+.write {
+    /* float: right; */
+    width: 70%;
+    color: #FFFFFF;
+}
+
+
+
+

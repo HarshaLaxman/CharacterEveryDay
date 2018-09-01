@@ -69,7 +69,11 @@ App = {
     for (let charCode = 0; charCode < App.characterVotes.length; charCode++) {
        let charVotes = {};
        let char = String.fromCharCode(charCode);
-       charVotes[char] = App.characterVotes[charCode].valueOf();
+       let votes = App.characterVotes[charCode].valueOf();
+       if (votes > 0) 
+        charVotes[char] = votes;       
+       else 
+        continue;
        characterVotesDict.push(charVotes);
     }
     characterVotesDict.sort(function(a,b) {

@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Character Every Day</title>
+
+    <!-- STYLING -->
+    <link href="css/main.css" rel="stylesheet">
   </head>
   <body>
     <!-- SCRIPTS -->
@@ -13,13 +16,18 @@
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
 
-    <div>Day: <span id="day"></span></div>
+    <div class="read">
+      <div>Day: <span id="day" class="contractData"></span></div>
+      <div>Winning Character: <span id="winningCharacter" class="contractData"></span></div>
+      <div>Winning Character Votes: <span id="winningCharacterVotes" class="contractData"></span></div>
+      <div>Character Votes: <span id="characterVotes" class="contractData"></span></div>
+    </div> 
+    
+    <hr>
 
-    <div>Winning Character: <span id="winningCharacter"></span></div>
-
-    <div>Winning Character Votes: <span id="winningCharacterVotes"></span></div>
-
-    <div>Character Votes: <span id="characterVotes"></span></div>
+    <div class="write">
+      <div>Vote <input type="text" maxlength="1" name="character"></input></div>
+    </div>
 
   </body>
 </html>
