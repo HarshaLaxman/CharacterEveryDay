@@ -94,11 +94,44 @@ App = {
     }
     
     return list;
+  },
+
+  vote: async function(charCode) {
+		console.log(charCode);
+		let instance = await App.contracts.CED.deployed();
+		instanceCED = instance;
+		console.log("instance: " , instance);
+
+		web3.eth.getAccounts(async function(error, accounts) {
+			if (error) {
+				console.log(error);
+			}
+			console.log(accounts);
+			var account = accounts[0];
+			await instance.voteForCharacter(charCode, {from: account});
+		});
+		// App.winningCharacter = await instance.winningCharacter();
+		// console.log("winningCharacter: " + App.winningCharacter);
   }
 }
 
 
 $(function() {
+	$('#voteForm').submit(function () {
+		let char = $("#characterInput").val();
+		if (char.length != 1) {
+			alert("Please enter a character");
+		}
+		let charCode = char.charCodeAt(0);
+		if (charCode < 0 || charCode > 255) {
+			alert(char + " is not a valid character");
+		}
+		App.vote(charCode);
+		return false;
+	});
     App.initWeb3();
+
+   
+
 });
 

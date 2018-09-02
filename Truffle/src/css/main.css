@@ -17,14 +17,26 @@ hr {
     /* position: absolute; */
 }
 
-input {
-    width: 1.5ch;
+ul {
+    list-style-type:none;
 }
 
+input[type="text"] {
+    width: 1.5ch;
+} 
+
 input[type="text"], textarea {
-    background-color : #C99D66; 
+    background-color : #ECF0F1; 
+}
+
+input[type=submit] {
+    background-color: #3C3C3D;
+    border-color: #C99D66;
 }
   
+#submitVote {
+    color: #C99D66;
+}
 
 .read {
     float: left;
