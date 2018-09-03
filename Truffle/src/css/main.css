@@ -6,15 +6,16 @@ div {
     color: #ECF0F1;
 }
 
-hr {
-    height:100vh; /* you might need some positioning for this to work, see other questions about 100% height */
+hr.vertical {
+    height:100vh; 
     /* width:0vh; */
     width: 0vh;
     float: left;
     color: #FFFFFF;
-    /* border:1px solid #FFFFFF; */
-    margin-right: 1em;
-    /* position: absolute; */
+}
+
+hr.horizontal {
+    color: #FFFFFF;
 }
 
 ul {
@@ -23,6 +24,7 @@ ul {
 
 input[type="text"] {
     width: 1.5ch;
+    margin-left: 1em;
 } 
 
 input[type="text"], textarea {
@@ -35,6 +37,11 @@ input[type=submit] {
 }
   
 #submitVote {
+    color: #C99D66;
+}
+
+#characterHistory {
+    margin-left: 1em;
     color: #C99D66;
 }
 
@@ -52,6 +59,12 @@ input[type=submit] {
     width: 70%;
     color: #FFFFFF;
 }
+
+.history {
+    height: 30%;
+}
+
+
 
 
 

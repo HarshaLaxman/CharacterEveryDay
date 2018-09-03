@@ -3,7 +3,8 @@ App = {
   contracts: {},
   winningCharacter: "",
   day: null,
-  instanceCED: null,
+	instanceCED: null,
+	characterHistory: [],
 
 
   initWeb3: function() {
@@ -52,9 +53,19 @@ App = {
     console.log("winningCharacterVotes: " + App.winningCharacterVotes);
 
     App.characterVotes = await instance.getCharacterVotes.call();
-    console.log("characterVotes: ", App.characterVotes);
+		console.log("characterVotes: ", App.characterVotes);
+		
+		events = await instance.allEvents({fromBlock: 0, toBlock: 'latest'});
+		await events.get(function(error, logs){
+			for (log of logs) {
+				let char = String.fromCharCode(log.args	._character.valueOf())
+				console.log(char);
+				App.characterHistory.push(char);
+			}
+			callback();
+		});
 
-    callback();
+    
   },
 
   loadPage: function() {
@@ -81,7 +92,12 @@ App = {
     })
     console.log(characterVotesDict);
     // document.getElementById('foo').appendChild(makeUL(options[0]));
-    $("#characterVotes").append(App.makeList(characterVotesDict));
+		$("#characterVotes").append(App.makeList(characterVotesDict));	
+		
+		for (char of App.characterHistory) {
+			console.log("here is" + char);
+			$("#characterHistory").append(char);
+		}
   },
 
   makeList: function(arrayObjs) {
@@ -129,7 +145,8 @@ $(function() {
 		App.vote(charCode);
 		return false;
 	});
-    App.initWeb3();
+
+	App.initWeb3();
 
    
 
