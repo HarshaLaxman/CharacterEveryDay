@@ -55,17 +55,4 @@ contract CharacterEveryDay {
         delete winningCharacter;
         delete winningCharacterVotes;
     }
-    
-    // function determineWinningCharacter() private {
-    //     uint8 winningCharacter = 46; //default if no one voted is '.'
-    //     uint256 winningCharacterVotes = 0;
-    //     // for (uint8 character = 0; character < characterVotes.length; character++) {
-    //     //     if (characterVotes[character] > winningCharacterVotes) {
-    //     //         winningCharacterVotes = characterVotes[character];
-    //     //         winningCharacter = character;
-    //     //     }
-    //     // }
-    //     addCharacter(winningCharacter);
-    // }
-    
 }

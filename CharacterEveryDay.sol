@@ -20,19 +20,23 @@ contract CharacterEveryDay {
         timeOfLastVote = now;
         voteForCharacter(_character);
     }
+
+    modifier onlyCharacter(uint256 _character) {
+        require(_character < 256);
+        _;
+    }
     
-    function voteForCharacter(uint8 _character) public {
+    function voteForCharacter(uint256 _character) public onlyCharacter(_character) {
         if ((now - timeOfLastVote) > 1 days) {
-            addCharacter(winningCharacter);
+            selectCharacter(winningCharacter);
         }
         
-        require(_character <= 256);
         uint256 todaysAddressHash = uint(keccak256(abi.encodePacked(day, msg.sender)));
         require(addressVotedToday[todaysAddressHash] == false);
         
         characterVotes[_character]++;
         if (characterVotes[_character] > winningCharacterVotes) {
-            winningCharacter = _character;
+            winningCharacter = uint8(_character);
             winningCharacterVotes = characterVotes[_character];
         }
         addressVotedToday[todaysAddressHash] = true;
@@ -43,7 +47,7 @@ contract CharacterEveryDay {
         return characterVotes;
     }
     
-    function addCharacter (uint8 _winningCharacter) private {
+    function selectCharacter (uint8 _winningCharacter) private {
         day += uint64((now - timeOfLastVote) / 1 days);
         // day += 1;
         emit CharacterSelected(_winningCharacter, characterVotes, day);
