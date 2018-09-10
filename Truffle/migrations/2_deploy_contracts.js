@@ -1,5 +1,5 @@
-var CharacterEveryDay = artifacts.require("CharacterEveryDay");
+var storyContract = artifacts.require("CharacterVoteDays");
 
 module.exports = function(deployer) {
-  deployer.deploy(CharacterEveryDay, 'H'.charCodeAt(0));
+  deployer.deploy(storyContract, 'H'.charCodeAt(0));
 };
