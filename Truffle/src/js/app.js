@@ -3,7 +3,7 @@ App = {
   contracts: {},
   winningCharacter: "",
   day: null,
-	instanceCED: null,
+	instanceCVD: null,
 	characterHistory: [],
 
 
@@ -20,27 +20,27 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON('CharacterEveryDay.json', function(data) {
+    $.getJSON('CharacterVoteDays.json', function(data) {
       console.log(data);
       // Get the necessary contract artifact file and instantiate it with truffle-contract
-      var CharacterEveryDayArtifact = data;
-      App.contracts.CED = TruffleContract(CharacterEveryDayArtifact);
+      var CharacterVoteDaysArtifact = data;
+      App.contracts.CVD = TruffleContract(CharacterVoteDaysArtifact);
 
       // Set the provider for our contract
-      App.contracts.CED.setProvider(App.web3Provider);
+      App.contracts.CVD.setProvider(App.web3Provider);
 
       // did it work?
-      console.log(App.contracts.CED);
+      console.log(App.contracts.CVD);
       
-      App.getDataCED(App.loadPage);
+      App.getDataCVD(App.loadPage);
 
       // App.loadWinningCharacter();
      })
   },
 
-  getDataCED: async function(callback) {
-    let instance = await App.contracts.CED.deployed();
-    instanceCED = instance;
+  getDataCVD: async function(callback) {
+    let instance = await App.contracts.CVD.deployed();
+    instanceCVD = instance;
     console.log("instance: " , instance);
 
     App.winningCharacter = await instance.winningCharacter();
@@ -48,6 +48,9 @@ App = {
 
     App.day = await instance.day();
     console.log("day: " + App.day);
+
+    App.votesToday = await instance.votesToday();
+		console.log("votesToday: " + App.votesToday);
 
     App.winningCharacterVotes = await instance.winningCharacterVotes();
     console.log("winningCharacterVotes: " + App.winningCharacterVotes);
@@ -69,10 +72,11 @@ App = {
   },
 
   loadPage: function() {
-    // App.winningCharacter = await instanceCED.winningCharacter().valueOf();
+    // App.winningCharacter = await instanceCVD.winningCharacter().valueOf();
     // console.log("winningCharacter: " + App.winningCharacter);
     console.log(App.winningCharacter);
     $("#day").append(App.day.valueOf());
+    $("#votesToday").append(App.votesToday.valueOf());
     $("#winningCharacter").append(String.fromCharCode(App.winningCharacter.valueOf()));
     $("#winningCharacterVotes").append(App.winningCharacterVotes.valueOf());
 
@@ -114,8 +118,8 @@ App = {
 
   vote: async function(charCode) {
 		console.log(charCode);
-		let instance = await App.contracts.CED.deployed();
-		instanceCED = instance;
+		let instance = await App.contracts.CVD.deployed();
+		instanceCVD = instance;
 		console.log("instance: " , instance);
 
 		web3.eth.getAccounts(async function(error, accounts) {
