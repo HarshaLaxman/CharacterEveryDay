@@ -60,8 +60,9 @@ App = {
 		
 		events = await instance.allEvents({fromBlock: 0, toBlock: 'latest'});
 		await events.get(function(error, logs){
+      console.log("logs", logs);
 			for (log of logs) {
-				let char = String.fromCharCode(log.args	._character.valueOf())
+				let char = String.fromCharCode(log.args._character.valueOf())
 				console.log(char);
 				App.characterHistory.push(char);
 			}

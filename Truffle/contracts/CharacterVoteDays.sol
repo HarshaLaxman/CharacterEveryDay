@@ -47,8 +47,8 @@ contract CharacterVoteDays {
     }
     
     function selectCharacter (uint8 _winningCharacter) private {
-        day += 1;
         emit CharacterSelected(_winningCharacter, characterVotes, day);
+        day += 1;
         delete characterVotes;
         delete winningCharacter;
         delete winningCharacterVotes;

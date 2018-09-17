@@ -104,4 +104,64 @@ contract('TestCharacterVoteDays', async (accounts) => {
 		
 		assert.equal(winningCharacter.valueOf(), D_Character);		
 	});
+
+	it("should add the character that won to the event log", async () => {
+		let instance = await cVD.deployed();
+
+		var dayFourWinner;
+		await instance.voteForCharacter(D_Character, {from: accounts[1]});
+		await instance.voteForCharacter(C_Character, {from: accounts[2]});
+		await instance.voteForCharacter(B_Character, {from: accounts[4]}).then((result) => {
+			dayFourWinner = result.logs[0].args._character;
+		});
+
+		assert.equal(dayFourWinner.valueOf(), D_Character);		
+	});
+
+	it("should store all winning characters in event log", async () => {
+		let instance = await cVD.deployed();
+		
+		var storedEvents;
+		const allEvents = await instance.allEvents({
+			fromBlock: 0,
+			toBlock: 'latest'
+		});
+		await allEvents.watch( await(async(err, responses) => {
+			// console.log(res.args._character.valueOf())
+			// console.log(res);
+			storedEvents = responses.args._character.valueOf();
+			// console.log(responses);
+			// console.log(storedEvents);
+			// allEvents.stopWatching();
+		}));
+			
+		console.log(storedEvents);
+
+		//   setTimeout(allEvents.stopWatching, 1000);
+
+		// instance.allEvents({
+		// 	fromBlock: 0,
+		// 	toBlock: 'latest'
+		//   }, function(error, log) {
+		// 	  console.log(log);
+		// 	  stopWatching
+		//   });
+
+		//   var events = myContractInstance.allEvents([additionalFilterObject,] function(error, log){
+		// 	if (!error)
+		// 	  console.log(log);
+		//    });
+		// MetaCoin.deployed().then(meta => {
+		// 	const allEvents = meta.allEvents({
+		// 	  fromBlock: 0,
+		// 	  toBlock: 'latest'
+		// 	});
+		// 	allEvents.watch((err, res) => {
+		// 	  console.log(err, res);
+		// 	});
+		//   });
+
+
+		assert.equal(1, 1);		
+	});
 })
