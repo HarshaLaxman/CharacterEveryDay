@@ -120,48 +120,19 @@ contract('TestCharacterVoteDays', async (accounts) => {
 
 	it("should store all winning characters in event log", async () => {
 		let instance = await cVD.deployed();
-		
-		var storedEvents;
-		const allEvents = await instance.allEvents({
+
+		const allEvents = instance.allEvents({
 			fromBlock: 0,
 			toBlock: 'latest'
-		});
-		await allEvents.watch( await(async(err, responses) => {
-			// console.log(res.args._character.valueOf())
-			// console.log(res);
-			storedEvents = responses.args._character.valueOf();
-			// console.log(responses);
-			// console.log(storedEvents);
-			// allEvents.stopWatching();
-		}));
-			
-		console.log(storedEvents);
+		  });
+		  allEvents.watch((err, res) => {
+			if (!err)
+			console.log(res);
+		  });	
+		//   allEvents.stopWatching();
 
-		//   setTimeout(allEvents.stopWatching, 1000);
+		assert.equal(1, 1);	
+		return;
 
-		// instance.allEvents({
-		// 	fromBlock: 0,
-		// 	toBlock: 'latest'
-		//   }, function(error, log) {
-		// 	  console.log(log);
-		// 	  stopWatching
-		//   });
-
-		//   var events = myContractInstance.allEvents([additionalFilterObject,] function(error, log){
-		// 	if (!error)
-		// 	  console.log(log);
-		//    });
-		// MetaCoin.deployed().then(meta => {
-		// 	const allEvents = meta.allEvents({
-		// 	  fromBlock: 0,
-		// 	  toBlock: 'latest'
-		// 	});
-		// 	allEvents.watch((err, res) => {
-		// 	  console.log(err, res);
-		// 	});
-		//   });
-
-
-		assert.equal(1, 1);		
 	});
 })
