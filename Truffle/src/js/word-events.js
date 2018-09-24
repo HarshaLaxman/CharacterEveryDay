@@ -58,8 +58,9 @@ App = {
         await events.get(function(error, logs){
             console.log("logs", logs);
             for (log of logs) {
-                let word = String.fromCharCode(log.args._word.valueOf())
-                console.log(word);
+                let word = log.args._word.valueOf();
+                word = web3.toAscii(word)
+                // console.log(word);
                 App.wordHistory.push(word);
             }
             callback();
@@ -90,10 +91,11 @@ App = {
     //   // document.getElementById('foo').appendChild(makeUL(options[0]));
     //       $("#characterVotes").append(App.makeList(characterVotesDict));	
           
-    //       for (char of App.characterHistory) {
-    //           console.log("here is" + char);
-    //           $("#characterHistory").append(char);
-    //       }
+        //   for (word of App.wordHistory) {
+        //     //   console.log("here is" + char);
+        //     console.log(word);
+        //       $("#wordHistory").append(String(word));
+        //   }
     },
   
     makeList: function(arrayObjs) {
@@ -136,12 +138,19 @@ App = {
           for (rounds = 1;rounds <= votesInRound;rounds++) {
             votes += votesInRound;
             if (votes > length) {
-                return {Round: round, VotesInRound: votesInRound};
+                return round;
             }
             round++;
           }          
         }
+      },
+
+      calcWinners: function(length) {
+          const round = calcRound(length);
+
       }
+
+
   }
   
   
